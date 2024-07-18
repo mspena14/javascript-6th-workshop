@@ -10,7 +10,7 @@ function manejarAsincronia(callback, promesa) {
 function crearPromesa() {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            resolve();
+            reject();
         }, timeoutTime);
     });
 };
