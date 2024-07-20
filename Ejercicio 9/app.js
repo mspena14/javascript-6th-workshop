@@ -1,39 +1,42 @@
-/* - Crea un script interactivo que utilice setTimeout para ejecutar una acción después de un intervalo pedido al usuario.
-- Suponiendo que el usuario ingreso n segundos, el script debe mostrar un mensaje en consola despues de n\*1000 milisegundos.
-- Usa promesas para manejar la asincronía y mostrar el mensaje en consola.
-- Usa fetch para cargar datos de la siguiente URL: https://jsonplaceholder.typicode.com/posts
-- Muestra los datos en consola y maneja cualquier error que pueda ocurrir en el bloque catch de la promesa. */
+function obtenerTiempo() {
+    return new Promise((resolve, reject) => {
+        const segundos = prompt("Ingresa el tiempo que desea esperar en segundos:").trim();
+        if (!(segundos > 0)) return reject('Debes ingresar un número mayor a 0.');
+        if (!segundos) return reject('No ingresaste respuesta.');
+        if (isNaN(segundos)) return reject('Debes ingresar un número.');
 
-const printingMessage = () => {
-    const n = prompt('Ingresa el tiempo que deseas esperar en segundos')
-
-    const messagePromise = () => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                reject();
-            }, n);
-        });
-    }
+        resolve(segundos);
+    });
 };
 
-function scriptInteractivo() {
-    const n = prompt('Ingresa el tiempo que deseas esperar en segundos')
+function imprimirMensaje(segundos) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log(`Han pasado ${segundos} segundos.`);
+            resolve();
+        }, segundos * 1000);
+    });
+};
 
-    return new Promise((resolve) => {
-         setTimeout(() => {
-            resolve("Te estoy saludando")
-        }, n * 1000)
-    }
-    )
-}
+function fetchData() {
+    return fetch('https://jsonplaceholder.typicode.com/posts')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(posts => {
+                console.log(`Titulo: ${posts.title}
 
+Contenido: ${posts.body}
+                    `);
+            });
+        })
+        .catch(err => {
+            console.error('Ocurrió un error al obtener los datos:', err);
+        });
+};
 
-scriptInteractivo()
-.then(response => console.log(response))
-.then(()=> {
-    const response = fetch("https://jsonplaceholder.typicode.com/posts")
-    return response
-    .then(response => {
-        const data = response.json()
-        console.log(data)})
-})
+obtenerTiempo()
+    .then(segundos => imprimirMensaje(segundos))
+    .then(fetchData)
+    .catch(err => {
+        console.error("Error:", err);
+    });
