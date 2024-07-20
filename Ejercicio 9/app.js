@@ -4,3 +4,36 @@
 - Usa fetch para cargar datos de la siguiente URL: https://jsonplaceholder.typicode.com/posts
 - Muestra los datos en consola y maneja cualquier error que pueda ocurrir en el bloque catch de la promesa. */
 
+const printingMessage = () => {
+    const n = prompt('Ingresa el tiempo que deseas esperar en segundos')
+
+    const messagePromise = () => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                reject();
+            }, n);
+        });
+    }
+};
+
+function scriptInteractivo() {
+    const n = prompt('Ingresa el tiempo que deseas esperar en segundos')
+
+    return new Promise((resolve) => {
+         setTimeout(() => {
+            resolve("Te estoy saludando")
+        }, n * 1000)
+    }
+    )
+}
+
+
+scriptInteractivo()
+.then(response => console.log(response))
+.then(()=> {
+    const response = fetch("https://jsonplaceholder.typicode.com/posts")
+    return response
+    .then(response => {
+        const data = response.json()
+        console.log(data)})
+})

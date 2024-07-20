@@ -1,4 +1,4 @@
-let timeoutTime = 1000;
+const timeoutTime = 1000;
 
 function manejarAsincronia(callback, promesa) {
     promesa.then(() =>
